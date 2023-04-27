@@ -7,14 +7,9 @@ use Illuminate\Database\Seeder;
 
 class VideoSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        Video::factory(3)->create();
+        Video::factory(100)->create();
 
     }
 }
