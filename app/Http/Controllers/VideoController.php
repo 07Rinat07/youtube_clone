@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Enums\Period;
 use App\Models\Video;
-
 class VideoController extends Controller
 {
     public function index()
@@ -12,8 +9,7 @@ class VideoController extends Controller
         $period = Period::tryFrom(request('period'));
 
         return Video::fromPeriod($period)
-            ->where('title', 'like', '%' . request('query') . '%')
-            ->orWhere('description', 'like', '%' . request('query') . '%')
+            ->search(request('query'))
             ->get();
     }
 
