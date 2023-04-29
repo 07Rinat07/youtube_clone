@@ -14,5 +14,8 @@ class Category extends Model
         return $this->belongsToMany(Video::class);
     }
 
-
+    public function scopeSearch($query, ?string $name)
+    {
+        return $query->where('name', 'like', "%$name%");
+    }
 }
