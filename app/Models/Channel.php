@@ -17,7 +17,6 @@ class Channel extends Model
     public function videos()
     {
         return $this->hasMany(Video::class);
-
     }
 
     public function user()
@@ -25,8 +24,16 @@ class Channel extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopeWithRelationships($query, array $with)
+    {
+        $relationships = ['playlists', 'videos', 'user'];
+
+        return $query->with(array_intersect($with, $relationships));
+    }
+
     public function scopeSearch($query, ?string $name)
     {
         return $query->where('name', 'like', "%$name%");
+
     }
 }
