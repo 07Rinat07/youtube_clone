@@ -16,11 +16,13 @@ class PlaylistVideoSeeder extends Seeder
      */
     public function run()
     {
-        Playlist::all()
-            ->each(fn(Playlist $playlist) => $playlist->videos()->saveMany($this->randomVideosFrom($playlist->channel)));
+        Playlist::with('channel.videos')->each(
+            fn(Playlist $playlist) => $playlist->videos()->saveMany($this->randomVideosFrom($playlist->channel))
+        );
     }
 
     private function randomVideosFrom(Channel $channel): Collection
+
     {
         return $channel->videos->whenEmpty(
             fn() => collect(),
