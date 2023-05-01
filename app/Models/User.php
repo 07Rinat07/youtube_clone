@@ -5,16 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected static $relationships = ['channel'];
     protected $fillable = [
         'name',
         'email',
@@ -43,17 +40,14 @@ class User extends Authenticatable
         return $this->hasOne(Channel::class);
     }
 
-    public function scopeWithRelationships($query, array $with)
+    public function scopeWithRelationships($query, array|string $with)
     {
-        $relationships = ['channel'];
-
-        return $query->with(array_intersect($with, $relationships));
+        return $query->with(array_intersect(Arr::wrap($with), static::$relationships));
     }
 
     public function scopeSearch($query, ?string $text)
     {
         return $query->where(function ($query) use ($text) {
-
             $query->where('name', 'like', "%$text%")
                 ->orWhere('email', 'like', "%$text%");
         });

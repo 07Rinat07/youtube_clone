@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Enums\Period;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class Video extends Model
 {
     use HasFactory;
+
+    protected static $relationships = ['channel', 'playlists', 'categories'];
 
     public function channel()
     {
@@ -25,17 +26,9 @@ class Video extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    public function scopeWithRelationships($query, array $with)
-    {
-        $relationships = ['channel', 'playlists', 'categories'];
-
-        return $query->with(array_intersect($with, $relationships));
-    }
-
     public function scopeFromPeriod($query, ?Period $period)
     {
         return $period ? $query->where('created_at', '>=', $period->date()) : $query;
-
     }
 
     public function scopeSearch($query, ?string $text)
