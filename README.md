@@ -9,7 +9,8 @@
 
 
 ## ABOUT project_Youtube_API_clone
-Briefly about the practical course made on the Laravel framework.
+A practice where almost the entire basic framework of the Laravel framework and also add-ons are considered and applied. 
+On the example of the backend.
 
 ## Laravel & Docker {https://laravel.com/docs/10.x#laravel-and-docker}
 
