@@ -13,6 +13,11 @@ Briefly about the practical course made on the Laravel framework.
 
 ## Laravel & Docker {https://laravel.com/docs/10.x#laravel-and-docker}
 
+### Check if composer and docker are installed on your system? 
+If not, here are the links: https://getcomposer.org/download/
+
+https://docs.docker.com/
+
 php artisan sail:install
 
 alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
