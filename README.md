@@ -41,7 +41,12 @@ sail artisan migrate:fresh --seed
 * sail artisan migrate:fresh --seed
 * For a successful result, it is necessary that the auth () LoginUsingId (1) line be commented out in the AuthServiceProvider.php file, which must be uncommented after a successful launch.
 * Or if you want then clone the repository and run as above.
-
+### INSTALL Laravel Sanctum:
+* composer require laravel/sanctum
+* php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+* sail artisan migrate
+* In the User Class Model, add the word use HasApiTokens
+* Delete line in AuthServiceProvider -----> auth()->loggingUsingId(1);
 ## Notes:
 If necessary, update the composer, if you receive errors, I recommend cleaning with the commands: 
 1. php artisan route:cache
