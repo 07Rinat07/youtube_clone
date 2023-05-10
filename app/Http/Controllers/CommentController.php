@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Period;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,12 +12,16 @@ class CommentController extends Controller
 {
     public function index()
     {
-        return Comment::with('parent', 'user', 'video')->get();
+        return Comment::withRelationships(request('with'))
+            ->fromPeriod(Period::tryFrom(request('period')))
+            ->search(request('query'))
+            ->orderBy(request('sort', 'created_at'), request('order', 'desc'))
+            ->simplePaginate(request('limit'));
     }
 
     public function show(Comment $comment)
     {
-        return $comment;
+        return $comment->loadRelationships(request('with'));
     }
 
     public function store(Request $request)
@@ -32,7 +37,6 @@ class CommentController extends Controller
     public function update(Comment $comment, Request $request)
     {
         Gate::allowIf(fn(User $user) => $comment->isOwnedBy($user));
-
         $attributes = $request->validate([
             'text' => 'required|string',
         ]);
@@ -42,7 +46,6 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         Gate::allowIf(fn(User $user) => $comment->isOwnedBy($user));
-
         $comment->delete();
     }
 }

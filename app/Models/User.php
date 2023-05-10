@@ -11,12 +11,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, WithRelationships;
 
-    protected static $relationships = ['channel'];
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected static $relationships = ['channel', 'comments'];
     protected $fillable = [
         'name',
         'email',
@@ -39,9 +34,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     public function channel()
     {
         return $this->hasOne(Channel::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function scopeSearch($query, ?string $text)
