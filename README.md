@@ -29,6 +29,19 @@ sail up -d
 
 sail artisan migrate:fresh --seed
 
+### Instructions on how to upgrade Laravel to version 10 in the project and configure the add-on.
+* rm composer.log
+* rm -if vendor
+* composer update
+* php artisan sail:install
+* Which services would you like to install ? ( SELECT->0 )
+* sail build --no-cache
+* service docker restart or systemctl restart docker
+* sail up -d
+* sail artisan migrate:fresh --seed
+* For a successful result, it is necessary that the auth () LoginUsingId (1) line be commented out in the AuthServiceProvider.php file, which must be uncommented after a successful launch.
+* Or if you want then clone the repository and run as above.
+
 ## Notes:
 If necessary, update the composer, if you receive errors, I recommend cleaning with the commands: 
 1. php artisan route:cache
