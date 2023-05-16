@@ -16,9 +16,7 @@ class PersonalAccessTokenController extends Controller
             'password' => 'required',
             'device_name' => 'required',
         ]);
-
         $user = User::where('email', $request->email)->first();
-
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
@@ -26,5 +24,10 @@ class PersonalAccessTokenController extends Controller
         }
 
         return ['token' => $user->createToken($request->device_name)->plainTextToken];
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
     }
 }
