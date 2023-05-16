@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\CommentController;
@@ -24,10 +23,13 @@ Route::get('/playlists/{playlist}', [PlaylistController::class, 'show']);
 Route::get('/videos', [VideoController::class, 'index']);
 Route::get('/videos/{video}', [VideoController::class, 'show']);
 
-Route::get('/comments', [PersonalAccessTokenController::class, 'index']);
-Route::get('/comments/{comment}', [PersonalAccessTokenController::class, 'show']);
-Route::post('/comments', [PersonalAccessTokenController::class, 'store'])->middleware('auth:sanctum');
-Route::put('/comments/{comment}', [PersonalAccessTokenController::class, 'update']);
-Route::delete('/comments/{comment}', [PersonalAccessTokenController::class, 'destroy']);
+Route::get('/comments', [CommentController::class, 'index']);
+Route::get('/comments/{comment}', [CommentController::class, 'show']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/comments', [CommentController::class, 'store']);
+    Route::put('/comments/{comment}', [CommentController::class, 'update']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+});
 
 Route::post('/personal-access-tokens', [PersonalAccessTokenController::class, 'store']);
