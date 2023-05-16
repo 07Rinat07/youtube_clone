@@ -47,6 +47,7 @@ sail artisan migrate:fresh --seed
 * sail artisan migrate
 * In the User Class Model, add the word use HasApiTokens
 * Delete line in AuthServiceProvider -----> auth()->loggingUsingId(1);
+### sail artisan sanctum:prune-expired –hours=0.01 (this command removes already spent tokens from the database - not valid)
 ## Notes:
 If necessary, update the composer, if you receive errors, I recommend cleaning with the commands: 
 1. php artisan route:cache
