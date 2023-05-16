@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Enums\Period;
@@ -30,25 +31,24 @@ class CommentController extends Controller
             'parent_id' => 'exists:comments,id',
             'video_id' => 'required_without:parent_id|exists:videos,id',
         ]);
-
         return Comment::create($attributes);
     }
 
     public function update(Comment $comment, Request $request)
     {
-        Gate::allowIf(fn (User $user) => $comment->isOwnedBy($user));
+        Gate::allowIf(fn(User $user) => $comment->isOwnedBy($user) && $user->tokenCan('comment:update'));
 
         $attributes = $request->validate([
             'text' => 'required|string',
         ]);
-
         $comment->fill($attributes)->save();
     }
 
     public function destroy(Comment $comment)
     {
-        Gate::allowIf(fn (User $user) => $comment->isOwnedBy($user));
+        Gate::allowIf(fn(User $user) => $comment->isOwnedBy($user) && $user->tokenCan('comment:delete'));
 
         $comment->delete();
     }
+
 }
