@@ -1,10 +1,12 @@
 <?php
 
+
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,17 +17,23 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
 Route::delete('/delete-account', [RegisteredUserController::class, 'destroy'])->middleware('auth');
+
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('guest');
+
 Route::delete('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth');
 
+
 Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-    ->middleware('auth');
+    ->middleware(['auth', 'throttle:6,1']);
+
 
 Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
-    ->middleware(['auth', 'signed'])
+    ->middleware(['auth', 'signed', 'throttle:6,1'])
     ->name('verification.verify');
