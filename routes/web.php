@@ -20,10 +20,12 @@ Route::get('/', function () {
 });
 Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest');
 Route::delete('/delete-account', [RegisteredUserController::class, 'destroy'])->middleware('auth');
-
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('guest');
 Route::delete('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth');
 
-Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->middleware('auth');
+Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+    ->middleware('auth');
 
-Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)->middleware('auth')->name('verification.verify');
+Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
